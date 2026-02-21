@@ -65,7 +65,7 @@ west build -b ek_ra6m4 bootloader/mcuboot/boot/zephyr -p always
 west flash
 {% endhighlight %}
 
-When I viewed the output of the console of my EK-RA6M4 board I could see the following, telling me MCUboot is running successfully: 
+When I viewed the output of the console of my EK-RA6M4 board I could see the following, telling me MCUboot is running successfully:
 
 {% highlight ruby %}
 *** Booting MCUboot 6cbea0a24256 ***
@@ -77,7 +77,7 @@ E: Unable to find bootable image
 
 ### Building a Bootable Application Image
 
-As can be seen from the console, MCUboot is unable to find a bootable image so the next step is to build one. 
+As can be seen from the console, MCUboot is unable to find a bootable image so the next step is to build one.
 
 I chose to use the blinky sample and to make it bootable I just added the following to the [project configuration file][blinky-prj-conf]:
 
@@ -113,6 +113,20 @@ As a temporary workaround I decided to remove the option setting data from my bu
 /delete-node/ &option_setting_ofs;
 /delete-node/ &option_setting_sas;
 /delete-node/ &option_setting_s;
+{% endhighlight %}
+
+> NOTE: If you are using Zephyr Version 4.2 or later you'll need to add the following to the overlay file instead of the above:
+
+{% highlight ruby %}
+/delete-node/ &option_setting_ofs0;
+/delete-node/ &option_setting_dualsel;
+/delete-node/ &option_setting_ofs1_sec;
+/delete-node/ &option_setting_banksel_sec;
+/delete-node/ &option_setting_bps_sec;
+/delete-node/ &option_setting_pbps_sec;
+/delete-node/ &option_setting_ofs1_sel;
+/delete-node/ &option_setting_banksel_sel;
+/delete-node/ &option_setting_bps_sel;
 {% endhighlight %}
 
 Now when I built again everything worked!
